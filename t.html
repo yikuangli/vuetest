@@ -9,17 +9,30 @@
 		<!--这是我们的View-->
 		<div id="app">
 			{{ message }}
+			<p>Using mustaches: {{ rawHtml }}</p>
+			<p>Using v-html directive: <span v-html="rawHtml"></span></p>
+			<button v-bind:disabled="isButtonDisabled">Button</button>
+			<div class="static"v-bind:class="{ active: isActive, 'text-danger': hasError }">???</div>
+			<div v-if="Math.random() > 0.5">
+				Now you see me
+			  </div>
+			  <div v-else>
+				Now you don't	
+			  </div>
         </div>
-        <p>Using mustaches: {{ rawHtml }}</p>
-        <p>Using v-html directive: <span v-html="rawHtml"></span></p>
+        
 	</body>
 	<script src="js/vue.js"></script>
 	<script>
 		// 这是我们的Model
 		var exampleData = {
-			message: 'Hello World!'
+			message: 'Hello World!',
+			rawHtml: '<span style="color:red">hhh</span>' ,
+			isButtonDisabled: true,
+			isActive: false,
+			hasError: false,
         }
-        var rawHtml = <span ></span> 
+        var rawHtml = "<span style:'color:red'>hhh</span>" 
         
 		// 创建一个 Vue 实例或 "ViewModel"
 		// 它连接 View 与 Model
