@@ -28,11 +28,13 @@
 		<div id="components-demo">
 			<button-counter></button-counter>
 		</div>
-		<blog-post
-			v-for="post in posts"
-			v-bind:key="post.id"
-			v-bind:title="post.title"
+		<div id="blog-post-demo">
+			<blog-post
+				v-for="post in posts"
+				v-bind:key="post.id"
+				v-bind:title="post.title"
 			></blog-post>
+		</div>
 
         
 	</body>
@@ -51,8 +53,16 @@
   		},
   		template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
 		})
+		Vue.component('blog-post', {
+			props: ['title'],
+			template: '<h3>{{ title }}</h3>'
+			})
 		new Vue({
 			el:'#components-demo'
+		})
+		Vue.component('blog-post', {
+			props: ['title'],
+			template: '<h3>{{ title }}</h3>'
 		})
 		// 创建一个 Vue 实例或 "ViewModel"
 		// 它连接 View 与 Model
@@ -86,5 +96,6 @@
 						]
 					}
 					})
+			
 	</script>
 </html>
