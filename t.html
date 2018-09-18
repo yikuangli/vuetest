@@ -19,8 +19,20 @@
 			  <div v-else>
 				Now you don't	
 			  </div>
+			  <input v-model="message" placeholder="edit me">
+			  <p>Message is: {{ message }}</p>
+			  <input type="checkbox" id="checkbox" v-model="checked">
+				<label for="checkbox">{{ checked }}</label>
 		</div>
 		<div id="demo">{{ fullName }}</div>
+		<div id="components-demo">
+			<button-counter></button-counter>
+		</div>
+		<blog-post
+			v-for="post in posts"
+			v-bind:key="post.id"
+			v-bind:title="post.title"
+			></blog-post>
 
         
 	</body>
@@ -28,8 +40,20 @@
 	<script>
 		// 这是我们的Model
 		var exampleData = {
+			message :'',
+			checked : true
         } 
-        
+        Vue.component('button-counter', {
+  			data: function () {
+    			return {
+      				count: 0
+   	 				}
+  		},
+  		template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+		})
+		new Vue({
+			el:'#components-demo'
+		})
 		// 创建一个 Vue 实例或 "ViewModel"
 		// 它连接 View 与 Model
 		new Vue({
@@ -52,5 +76,15 @@
 				}
 			}
 			})
+			new Vue({
+  				el: '#blog-post-demo',
+ 				 data: {
+    				posts: [
+						{ id: 1, title: 'My journey with Vue' },
+						{ id: 2, title: 'Blogging with Vue' },
+						{ id: 3, title: 'Why Vue is so fun' }
+						]
+					}
+					})
 	</script>
 </html>
