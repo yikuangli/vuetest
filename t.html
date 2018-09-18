@@ -29,11 +29,15 @@
 			<button-counter></button-counter>
 		</div>
 		<div id="blog-post-demo">
+			<div :style="{ fontSize: postFontSize + 'em' }">
 			<blog-post
 				v-for="post in posts"
 				v-bind:key="post.id"
 				v-bind:title="post.title"
+				v-on:enlarge-text="postFontSize += 0.1"
 			></blog-post>
+			
+			</div>
 		</div>
 
         
@@ -53,17 +57,21 @@
   		},
   		template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
 		})
-		Vue.component('blog-post', {
-			props: ['title'],
-			template: '<h3>{{ title }}</h3>'
-			})
 		new Vue({
 			el:'#components-demo'
 		})
 		Vue.component('blog-post', {
-			props: ['title'],
-			template: '<h3>{{ title }}</h3>'
-		})
+			props: ['post'],
+			template: `
+				<div class="blog-post">
+				<h3>{{ post.title }}</h3>
+				<button  v-on:click="$emit('enlarge-text')">
+					Enlarge text
+				</button>
+				<div v-html="post.content"></div>
+				</div>
+			`
+			})
 		// 创建一个 Vue 实例或 "ViewModel"
 		// 它连接 View 与 Model
 		new Vue({
@@ -93,7 +101,8 @@
 						{ id: 1, title: 'My journey with Vue' },
 						{ id: 2, title: 'Blogging with Vue' },
 						{ id: 3, title: 'Why Vue is so fun' }
-						]
+						],
+					postFontSize: 1
 					}
 					})
 			
