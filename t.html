@@ -8,7 +8,6 @@
 	<body>
 		<!--这是我们的View-->
 		<div id="app">
-			{{ message }}
 			<p>Using mustaches: {{ rawHtml }}</p>
 			<p>Using v-html directive: <span v-html="rawHtml"></span></p>
 			<button v-bind:disabled="isButtonDisabled">Button</button>
@@ -27,8 +26,11 @@
 		<div id="demo">{{ fullName }}</div>
 		<div id="components-demo">
 			<button-counter></button-counter>
+			<custom-input v-model="searchText"></custom-input> 
+			{{searchText}}
 		</div>
-		<div id="blog-post-demo">
+
+		<!-- <div id="blog-post-demo">
 			<div :style="{ fontSize: postFontSize + 'em' }">
 			<blog-post
 				v-for="post in posts"
@@ -38,7 +40,17 @@
 			></blog-post>
 			
 			</div>
-		</div>
+		</div> -->
+		<div id="blog-posts-events-demo">
+			<div :style="{ fontSize: postFontSize + 'em' }">
+			  <blog-post
+				v-for="post in posts"
+				v-bind:key="post.id"
+				v-bind:post="post"
+				v-on:enlarge-text="onEnlargeText"
+			  ></blog-post>
+			</div>
+		  </div>
 
         
 	</body>
@@ -48,7 +60,16 @@
 		var exampleData = {
 			message :'',
 			checked : true
-        } 
+		} 
+		Vue.component('custom-input', {
+			props: ['value'],
+			template: `
+				<input
+				v-bind:value="value"
+				v-on:input="$emit('input', $event.target.value)"
+				>
+			`
+			})
         Vue.component('button-counter', {
   			data: function () {
     			return {
@@ -58,17 +79,23 @@
   		template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
 		})
 		new Vue({
-			el:'#components-demo'
+			el:'#components-demo',
+			data: {
+				searchText: ''
+			}
 		})
 		Vue.component('blog-post', {
 			props: ['post'],
 			template: `
 				<div class="blog-post">
 				<h3>{{ post.title }}</h3>
-				<button  v-on:click="$emit('enlarge-text')">
-					Enlarge text
-				</button>
 				<div v-html="post.content"></div>
+				<button  v-on:click="$emit('enlarge-text', 0.1)" >
+        			Enlarge text
+				  </button>
+				  <button  v-on:click="$emit('enlarge-text', -0.1)" >
+        			Enlarge text
+      			</button>
 				</div>
 			`
 			})
@@ -94,17 +121,24 @@
 				}
 			}
 			})
+
 			new Vue({
-  				el: '#blog-post-demo',
- 				 data: {
-    				posts: [
+				el: '#blog-posts-events-demo',
+				data: {
+					posts: [
 						{ id: 1, title: 'My journey with Vue' },
 						{ id: 2, title: 'Blogging with Vue' },
 						{ id: 3, title: 'Why Vue is so fun' }
 						],
 					postFontSize: 1
+				},
+				methods: {
+					onEnlargeText: function(siz){
+						this.postFontSize += siz 
 					}
-					})
+				}
+				})
+					
 			
 	</script>
 </html>
